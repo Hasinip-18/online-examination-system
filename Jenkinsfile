@@ -6,11 +6,10 @@ pipeline {
         maven 'Maven3'
     }
 
-environment {
-    DOCKER_IMAGE = 'phasini/online-examination-system:1.0'
-    DOCKER_BIN = '/Users/hasinipanjala/.docker/bin/docker'
-}
-
+    environment {
+        DOCKER_IMAGE = 'phasini/online-examination-system:1.0'
+        DOCKER_BIN = '/Users/hasinipanjala/.docker/bin/docker'
+    }
     stages {
         stage('Checkout') {
             steps {
@@ -59,7 +58,7 @@ environment {
                 '''
             }
         }
-                stage('Push Docker Image to Docker Hub') {
+        stage('Push Docker Image to Docker Hub') {
             steps {
                 withCredentials([usernamePassword(
                     credentialsId: 'dockerhub-credentials',
@@ -75,8 +74,8 @@ environment {
                             --password-stdin
 
                         "$DOCKER_BIN" push "$DOCKER_IMAGE"
-
                         "$DOCKER_BIN" logout
+                        echo "Docker image pushed successfully"
                         echo "Docker image pushed successfully"
                     '''
                 }
