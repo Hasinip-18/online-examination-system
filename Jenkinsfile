@@ -6,10 +6,10 @@ pipeline {
         maven 'Maven3'
     }
 
-    environment {
-        DOCKER_IMAGE = 'online-examination-system:1.0'
-        DOCKER_BIN = '/Users/hasinipanjala/.docker/bin/docker'
-    }
+environment {
+    DOCKER_IMAGE = 'phasini/online-examination-system:1.0'
+    DOCKER_BIN = '/Users/hasinipanjala/.docker/bin/docker'
+}
 
     stages {
         stage('Checkout') {
