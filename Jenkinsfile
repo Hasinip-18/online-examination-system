@@ -98,6 +98,28 @@ pipeline {
                 '''
             }
         }
+        stage('Deploy to Kubernetes') {
+            steps {
+                sh '''
+                    set -e
+                    export PATH="/Users/hasinipanjala/.docker/bin:/Applications/Docker.app/Contents/Resources/bin:/opt/homebrew/bin:$PATH"
+
+                    echo "Updating Kubernetes deployment..."
+                    kubectl set image deployment/online-examination-system \
+                        online-examination-system="$DOCKER_IMAGE"
+
+                    echo "Waiting for deployment rollout..."
+                    kubectl rollout status deployment/online-examination-system \
+                        --timeout=120s
+
+                    echo "Checking deployment..."
+                    kubectl get deployments
+                    kubectl get pods
+
+                    echo "Kubernetes deployment completed successfully"
+                '''
+            }
+        }
     }
 
     post {
