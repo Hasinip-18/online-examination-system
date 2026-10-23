@@ -59,6 +59,23 @@ pipeline {
                 '''
             }
         }
+        stage('Check Kubernetes Access') {
+            steps {
+                sh '''
+                    set -e
+                    export PATH="/Users/hasinipanjala/.docker/bin:/Applications/Docker.app/Contents/Resources/bin:/opt/homebrew/bin:$PATH"
+
+                    echo "Checking kubectl..."
+                    kubectl version --client
+
+                    echo "Checking Kubernetes context..."
+                    kubectl config current-context
+
+                    echo "Checking Kubernetes nodes..."
+                    kubectl get nodes
+                '''
+            }
+        }
     }
 
     post {
