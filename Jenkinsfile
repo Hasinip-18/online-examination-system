@@ -59,6 +59,29 @@ pipeline {
                 '''
             }
         }
+                stage('Push Docker Image to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-credentials',
+                    usernameVariable: 'DOCKERHUB_USER',
+                    passwordVariable: 'DOCKERHUB_TOKEN'
+                )]) {
+                    sh '''
+                        set -e
+                        export PATH="/Users/hasinipanjala/.docker/bin:/Applications/Docker.app/Contents/Resources/bin:$PATH"
+
+                        echo "$DOCKERHUB_TOKEN" | "$DOCKER_BIN" login \
+                            --username "$DOCKERHUB_USER" \
+                            --password-stdin
+
+                        "$DOCKER_BIN" push "$DOCKER_IMAGE"
+
+                        "$DOCKER_BIN" logout
+                        echo "Docker image pushed successfully"
+                    '''
+                }
+            }
+        }
         stage('Check Kubernetes Access') {
             steps {
                 sh '''
