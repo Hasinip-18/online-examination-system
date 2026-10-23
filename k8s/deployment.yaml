@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: online-examination-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: online-examination-system
+  template:
+    metadata:
+      labels:
+        app: online-examination-system
+    spec:
+      containers:
+        - name: online-examination-system
+          image: phasini/online-examination-system:1.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
