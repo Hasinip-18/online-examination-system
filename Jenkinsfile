@@ -11,7 +11,6 @@ environment {
 }
 
 stages {
-
     stage('Checkout') {
         steps {
             checkout scm
@@ -34,8 +33,7 @@ stages {
     stage('Package') {
         steps {
             sh 'mvn -B package'
-            archiveArtifacts artifacts: 'target/*.jar',
-                             fingerprint: true
+            archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
         }
     }
 
@@ -53,9 +51,9 @@ stages {
         steps {
             sh '''
                 set -e
-                "$DOCKER_BIN" image inspect "$DOCKER_IMAGE"
+                "$DOCKER_BIN" image inspect "$DOCKER_IMAGE" > /dev/null
+                echo "Docker image verified successfully"
             '''
-            echo 'Docker image built and verified successfully'
         }
     }
 }
@@ -72,4 +70,5 @@ post {
     always {
         echo 'Pipeline execution completed'
     }
+}
 }
